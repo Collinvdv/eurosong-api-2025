@@ -10,8 +10,28 @@ router.get('/', async function(req, res, next) {
   res.json(data);
 });
 
-router.post('/', (req, res, next) => {
-  res.send("Just created new record");
+router.post('/', async (req, res, next) => {
+  const checkArtist = await prisma.artists.findMany({
+    where: {
+      name: req.body.name
+    }
+  });
+
+  if (checkArtist.length > 0) {
+    res.json({
+      "message": "Already an artist with the same name"
+    });
+  } else {
+
+    const newArtist = await prisma.artists.create({
+      data: { 
+        name: req.body.name
+      }
+    });
+  
+    res.json(newArtist);
+  }
+
 })
 
 module.exports = router;

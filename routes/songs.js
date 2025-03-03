@@ -14,8 +14,15 @@ router.get('/', async (req, res, next) => {
   res.json(data);
 });
 
-router.post('/', (req, res, next) => {
-  res.send("Just created new record");
+router.post('/', async (req, res, next) => {
+  const newSong = await prisma.songs.create({
+    data: { 
+      name: req.body.name,
+      artist_id: req.body.artist_id
+    }
+  });
+
+  res.json(newSong);
 })
 
 module.exports = router;

@@ -18,4 +18,9 @@ router.post('/', async (req, res, next) => {
   res.json(newVote);
 })
 
+router.get('/', async (req, res, next) => {
+  const data = await prisma.votes.findMany();
+  res.json(data);
+});
+
 module.exports = router;
